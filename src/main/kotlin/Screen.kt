@@ -17,7 +17,7 @@ abstract class Screen(
 
     abstract fun handleInput(input: String)
 
-    fun action(menuType: Screen, previousType: Screen?){
+    fun action(menuType: Screen, previousType: Screen?){ //принимает функцию для запуска экрана и предыдущий экран
         previousScreen = previousType
         while (true) {
 
@@ -37,17 +37,4 @@ abstract class Screen(
 
         }
     }
-}
-
-open class ArchivesStructure {
-    companion object {
-        val mapOfArchiveNotes: MutableMap<String, MutableMap<String, String>> = mutableMapOf()
-
-        val archives: MutableList<String> = mutableListOf()
-
-        val notes: MutableMap<String, Note> = mutableMapOf()
-    }
-
-
-
 }

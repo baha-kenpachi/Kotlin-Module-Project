@@ -2,15 +2,11 @@
 import java.util.*
 
 class NoteMenu(
-    private val archiveName: String,
-//    private val archiveMenu: ArchiveMenu
-): Screen(null) {
+    private val archiveName: String?
 
-        //private val notes: MutableMap<String, Note> = mutableMapOf()
-    //private val scanner: Scanner = Scanner(System.`in`)
+): Screen(ArchiveMenu()) {
 
-
-
+    //val archiveMenu= ArchiveMenu()
     override fun showMenu() {
         println("Список заметок в архиве '$archiveName':")
         println("0. Создать заметку")
@@ -27,9 +23,11 @@ class NoteMenu(
             "0" -> showCreateNoteScreen()
             "${Data.notes.size + 1}" -> exit()
             else -> {
-                val noteIndex = input.toIntOrNull() //нужно в notes.keys проитерировать и сравнивать индекс и input, если будет одинаково то через selectNote перейти в экран просмотра заметки
+                val noteIndex =
+                    input.toIntOrNull() //нужно в notes.keys проитерировать и сравнивать индекс и input, если будет одинаково то через selectNote перейти в экран просмотра заметки
                 if (noteIndex != null && noteIndex in 1..Data.notes.size) {
-                    selectNote(noteIndex - 1)
+                    val noteName = Data.notes.keys.elementAt(noteIndex-1)
+                    selectNote(noteName, Data.notes.getOrDefault(noteName, defaultValue = "Mistake"))//
                 } else {
                     println("Ошибка: введите число из списка.")
                 }
@@ -50,13 +48,16 @@ class NoteMenu(
         //showMenu()
     }
 
-    private fun selectNote(noteIndex: Int) { // нужно переписать, так как теперь по индексу не вызвать значение ключа
-        val noteName = Data.notes.keys.elementAt(noteIndex)
+    private fun selectNote(
+        noteName: String,
+        noteContent: String
+    ) {
+
         println("Вы выбрали заметку '$noteName'.")
+        val note = Note(noteName, noteContent)
+        //val archiveMenu= ArchiveMenu()
+        val noteMenu = NoteMenu(archiveName)
+        note.action(note, noteMenu)
         // Действия при выборе заметки
     }
-
-//    override fun exit() {
-//        archiveMenu.showMenu()
-//    }
 }
