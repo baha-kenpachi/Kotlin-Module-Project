@@ -17,7 +17,7 @@ class NoteMenu(
 
         if (notes != null) {
             for (i in notes.indices) {
-                menu.put("${i + 1}. ${notes[i].noteName}", { selectNote(notes) })
+                menu.put("${i + 1}. ${notes[i].noteName}", { selectNote(notes[i].noteName, notes[i].noteContent) })
             }
             menu.put("${notes.size + 1}. Выход", { exit() })
         }
@@ -54,10 +54,10 @@ class NoteMenu(
         }
     }
 
-    private fun selectNote(note: MutableList<Note>?) {
+    private fun selectNote(name:String, content:String) {
 
         /*println("Вы выбрали заметку '${note.noteName}'.")*/
-        val noteScreen = NoteScreen()
+        val noteScreen = NoteScreen(name, content)
         val noteMenu = NoteMenu(archiveName, archive)
         noteScreen.action(noteScreen, noteMenu)
 

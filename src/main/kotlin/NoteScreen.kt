@@ -1,12 +1,15 @@
 import model.Note
 
-class NoteScreen():Screen(ArchiveMenu()) {
+class NoteScreen(name:String, content:String):Screen(ArchiveMenu()) {
 
+    val name = name
+    val content = content
     override fun showMenu() {
-        //println("Просмотр заметки ${noteName}:")
+
+        println("Просмотр заметки ${name}:")
         println("0. Выход с просмотра заметки")
         println("============================")
-        //println("$noteContent")
+        println("$content")
     }
 
 
