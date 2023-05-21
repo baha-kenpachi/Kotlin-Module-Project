@@ -1,30 +1,34 @@
+import model.Archive
+
 class ArchiveMenu : Screen(null) {
 
     private val createArchiveScreen: CreateArchiveScreen = CreateArchiveScreen(this)
-
-    override fun showMenu() {
-        println("Список архивов:")
-        println("0. Создать архив")
-
-        for (i in Data.archives.indices) {
-            println("${i + 1}. ${Data.archives[i]}")
+    var menu: MutableMap<String, () -> Unit> = mutableMapOf()
+    override fun updateMenu() {
+        // функция updateMenu для обновления изменяемого списока, который содержит в себе название пункта и лямбду, которая вызовется при выборе этого пункта.
+        menu = mutableMapOf()
+        menu.put("0. Создать архив", { showCreateArchiveScreen() })
+        val archives = Data.getAllArchives()
+        for (i in archives.indices) {
+            menu.put("${i + 1}. ${archives[i].archiveName}", { selectArchive(archives[i]) })
         }
-        println("${Data.archives.size + 1}. Выход")
+        menu.put("${Data.getAllArchives().size + 1}. Выход", { exit() })
+
+    }
+
+    override fun showMenu() { // функция выводит через итерацию каждую строку списка
+        println("Список архивов:")
+        updateMenu()
+        menu.forEach { t, u -> println(t) }
     }
 
     override fun handleInput(input: String) {
-        when (input) {
-            "0" -> showCreateArchiveScreen()
-            "${Data.archives.size + 1}" -> exit()
-            else -> {
-                val archiveIndex = input.toIntOrNull()
-                if (archiveIndex != null && archiveIndex in 1..Data.archives.size) {
-                    selectArchive(archiveIndex - 1)
-                } else {
-                    println("Ошибка: введите число из списка.")
-                }
-            }
-        }
+
+        val selected =
+            menu.keys.find { // через find проходим по каждому ключу с 0 до 1 индекса ключа если данное значение совпадает с input то возвращаем ключ и присваеваем к selected
+                it.substring(0, 1) == input
+            } // если selected  не пустой то запускаем лямбда функцию по ключу мапы, котрую реализовали  в updateMenu
+        if (selected == null) println("Ошибка: введите число из списка.") else menu[selected]?.invoke()
     }
 
     private fun showCreateArchiveScreen() {
@@ -34,24 +38,21 @@ class ArchiveMenu : Screen(null) {
     }
 
     fun createArchive(archiveName: String) {
-        if (Data.archives.contains(archiveName)) {
+        if (Data.getArchiveByName(archiveName) != null) {
             println("Ошибка: архив '$archiveName' уже существует.")
         } else {
-            Data.archives.add(archiveName)
-            Data.allItem[archiveName] = mutableMapOf() //у каждого архива теперь своя мапа
+            Data.addArchive(Archive(archiveName))
             println("Архив '$archiveName' создан.")
         }
+
     }
 
-    private fun selectArchive(archiveIndex: Int) {
-        val archiveName = Data.archives[archiveIndex]
+    private fun selectArchive(archive: Archive) {
+        val archiveName = archive.archiveName
         println("Вы выбрали архив '$archiveName'.")
-        val noteMenu = NoteMenu(archiveName)
+        val noteMenu = NoteMenu(archiveName, archive) // добавил второй параметр archive
         val archiveMenu = ArchiveMenu()
         noteMenu.action(noteMenu, archiveMenu)
-
-        //нужно реализовать переход в НотМеню
-
     }
 
     override fun exit() {
