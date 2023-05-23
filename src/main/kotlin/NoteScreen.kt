@@ -1,17 +1,13 @@
-import model.Note
-
-class NoteScreen(name:String, content:String):Screen(ArchiveMenu()) {
-
+class NoteScreen(name: String, content: String) : Screen() {
     val name = name
     val content = content
     override fun showMenu() {
 
-        println("Просмотр заметки ${name}:")
+        println("\nПросмотр заметки ${name}:")
         println("0. Выход с просмотра заметки")
         println("============================")
         println("$content")
     }
-
 
     override fun handleInput(input: String) {
         when (input) {
@@ -20,7 +16,6 @@ class NoteScreen(name:String, content:String):Screen(ArchiveMenu()) {
             else -> {
                 println("Ошибка: введите число из списка.")
             }
-
         }
     }
 }

@@ -1,6 +1,6 @@
 fun main(args: Array<String>) {
 
-    val archiveMenu = ArchiveMenu()
+    val archiveScreen = ArchiveScreen()
 
-    archiveMenu.action(archiveMenu, null)
+    archiveScreen.action(archiveScreen,/* null*/)
 }

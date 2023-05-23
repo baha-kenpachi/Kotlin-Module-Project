@@ -1,3 +1,3 @@
 package model
 
-data class Note(val noteName:String, val noteContent:String)
+data class Note(val noteName: String, val noteContent: String)

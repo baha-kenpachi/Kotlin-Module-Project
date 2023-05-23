@@ -1,22 +1,23 @@
 import java.util.Scanner
 
-abstract class Screen(
-    var previousScreen: Screen?
-) {
+abstract class Screen() {
+    var menu: MutableMap<String, () -> Unit> = mutableMapOf()
     var runner = true
-    fun showScreen(previousScreen: Screen) {
-        action(previousScreen, null)
-    }
 
     protected val scanner: Scanner = Scanner(System.`in`)
     open fun updateMenu() {
     }
 
+    fun iteratorForShowMenu(){
+        updateMenu()
+        menu.forEach { t, u -> println(t) }
+    }
     abstract fun showMenu()
-    abstract fun handleInput(input: String)
-    fun action(menuType: Screen, previousType: Screen?) { //принимает функцию для запуска экрана и предыдущий экран
-        previousScreen = previousType
 
+    abstract fun handleInput(input: String)
+    fun action(
+        menuType: Screen,
+    ) { //принимает функцию для запуска экрана и предыдущий экран
         while (runner) {
             updateMenu()
             menuType.showMenu()
@@ -31,10 +32,6 @@ abstract class Screen(
     }
 
     open fun exit() {
-        runner =false
-        /*if (previousScreen != null) {
-
-            showScreen(previousScreen!!)
-        }*/
+        runner = false
     }
 }

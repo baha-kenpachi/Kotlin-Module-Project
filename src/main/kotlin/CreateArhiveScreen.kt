@@ -1,7 +1,7 @@
 
-class CreateArchiveScreen(private val archiveMenu: ArchiveMenu) {
+class CreateArchiveScreen(private val archiveScreen: ArchiveScreen) {
     fun showScreen() {
-        println("=== Создание архива ===")
+        println("\n=== Создание архива ===")
         println("Введите название нового архива:")
     }
 
@@ -9,11 +9,8 @@ class CreateArchiveScreen(private val archiveMenu: ArchiveMenu) {
         val archiveName = input.trim()
         if (archiveName.isEmpty()) {
             println("Ошибка: название архива не может быть пустым.")
-            //archiveMenu.showMenu()
         } else {
-            archiveMenu.createArchive(archiveName)
-
-
+            archiveScreen.createArchive(archiveName)
         }
     }
 
