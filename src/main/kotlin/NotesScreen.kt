@@ -51,7 +51,7 @@ class NotesScreen(
     }
 
     private fun selectNote(name: String, content: String) {
-        /*println("Вы выбрали заметку '${note.noteName}'.")*/
+        println("Вы выбрали заметку '${name}'.")
         val noteScreen = NoteScreen(name, content)
         noteScreen.action(noteScreen)
     }
